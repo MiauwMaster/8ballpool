@@ -22,17 +22,20 @@ body{
 #scoreboard div{
     display: inline-block;
     width: 50px;
-//height: 50px;
+    height: 50px;
     margin-left: auto;
     margin-right: auto;
 }
 
 #scoreboard #turn{
-    width: 100px;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
+    width: 130px;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
     padding-top: 10px;
     padding-bottom: 10px;
+
 }
 
 #scoreboard #player0{
@@ -67,7 +70,7 @@ img{
     position: absolute;
     width: 30px;
     height: 50%;
-    top: 100px;
+    top: 130px;
     left: 10px;
     background-color: grey;
 }
