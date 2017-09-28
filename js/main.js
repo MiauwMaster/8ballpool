@@ -13,27 +13,28 @@ function initScene() {
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.up = new THREE.Vector3(0,1,0);
-
-    //camera.position.set(0, 20, 0);
-    //camera.lookAt(scene.position);
+    camera.noRotate = true;
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0xccccff, 1);
     document.body.appendChild(renderer.domElement);
-    document.getElementById("turn").innerHTML = ("turn: player " + (player + 1));
+    document.getElementById("turn").innerHTML = ("Player " + (player + 1));
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
     controls.enableZoom = true;
     controls.enablePan = false;
+    controls.enableRotate = false;
 
-    controls.minDistance = 0;
-    controls.maxDistance = 50;
+
+    controls.minDistance = 5;
+    controls.maxDistance = 15;
 
     controls.maxPolarAngle = 0.49 * Math.PI;
 
-    camera.position.set(-170, 70, 0);
+
+    camera.position.set(-170, 150, 0);
 
 }
 
@@ -120,17 +121,20 @@ function initBalls(){
 
 function initCue(){
     var textureLoader = new THREE.TextureLoader();
-    var cueMaterial = new THREE.MeshBasicMaterial({map: textureLoader.load('textures/hout.jpg')});
+    var cueMaterial = new THREE.MeshBasicMaterial({map: textureLoader.load('textures/Keu.jpg')});
     var cueGeometry = new THREE.CylinderGeometry(0.05, 0.2, 15, 32, 32);
     var cueMesh = new THREE.Mesh(cueGeometry, cueMaterial);
     cueGeometry.translate(0, -9, 0);
-    cueMesh.rotation.z = Math.PI / 2;
+    //cueMesh.rotation.z = Math.PI / 2;
+    cueMesh.rotation.z = -0.6 * Math.PI;
     cueMesh.position.y = 0;
 
     cuePivot = new THREE.Object3D();
-    cuePivot.rotation.z = 0.95 * Math.PI;
+    //cuePivot.rotation.z = 0.95 * Math.PI;
     cuePivot.add(cueMesh);
     balls[0].add(cuePivot);
+    cuePivot.add(camera);
+
 }
 
 //Draaien van de cue om de witte bal heen.
@@ -286,6 +290,7 @@ function appendImg(ballNr, player){
 function render() {
     requestAnimationFrame(render);
     controls.update();
+
     for (var i = 0; i < balls.length; i++) {
         var ball = balls[i];
         if (ball.speedmultiplier > 0) {
@@ -302,7 +307,7 @@ function render() {
         if(!ballPotted || wrongPotted){
             player = player ? 0 : 1;
         }
-        document.getElementById("turn").innerHTML = ("turn: player " + (player + 1));
+        document.getElementById("turn").innerHTML = ("Player " + (player + 1));
     }
     if(shotStarted){
         if(shotSpeed <= 0){
