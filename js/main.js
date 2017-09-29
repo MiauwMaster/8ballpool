@@ -11,24 +11,41 @@ var winner = new Audio('sounds/winnerwinnerchickendinner.mp3');
 function initScene() {
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.up = new THREE.Vector3(0,1,0);
+    scene.add(camera);
+
+    var light = new THREE.AmbientLight(0x0d0d0d, 5); // soft white ambient light
+    scene.add(light);
+
+    var tableLight1 = new TableLight(-10, 8, 0);
+    var tableLight2 = new TableLight(12, 8, 0);
+
+    var holelight1 = new TableLight(-19.5, 5, -11.5);
+    var holelight2 = new TableLight(0, 5, -12);
+    var holelight3 = new TableLight(19.5, 5, -11.5);
+    var holelight4 = new TableLight(-19.5, 5, 11.5);
+    var holelight5 = new TableLight(0, 5, 12);
+    var holelight6 = new TableLight(19.5, 5, 11.5);
+
+
+
+
+
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0xccccff, 1);
+    renderer.setClearColor(0, 1);
     document.body.appendChild(renderer.domElement);
     document.getElementById("turn").innerHTML = ("Player " + (player + 1));
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-    controls.enableZoom = false;
-    controls.enablePan = false;
-    controls.enableRotate = false;
+    controls.enableZoom = true;
+    controls.enablePan = true;
 
-
-    controls.minDistance = 5;
-    controls.maxDistance = 15;
+    controls.minDistance = 10;
+    controls.maxDistance = 30;
 
     controls.maxPolarAngle = 0.49 * Math.PI;
 
@@ -40,7 +57,7 @@ function initScene() {
 function initTable(){
     var textureLoader = new THREE.TextureLoader();
     var tableGeometry = new THREE.BoxGeometry(42, 1, 26);
-    var tableMaterial = new THREE.MeshBasicMaterial({map: textureLoader.load('textures/laken.jpg')});
+    var tableMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load('textures/laken.jpg')});
     var table = new THREE.Mesh(tableGeometry, tableMaterial);
     table.position.set(0,-0.5,0);
 
@@ -48,7 +65,12 @@ function initTable(){
     var zWallGeometry = new THREE.BoxGeometry(1, 1, 21);
     var xBorderGeometry = new THREE.BoxGeometry(44,2,1);
     var zBorderGeometry = new THREE.BoxGeometry(1 ,2, 26);
-    var wallMaterial = new THREE.MeshBasicMaterial({map: textureLoader.load('textures/Keu.jpg')});
+    var leg1Geometry = new THREE.BoxGeometry(2, 5, 2);
+    var leg2Geometry = new THREE.BoxGeometry(2, 5, 2);
+    var leg3Geometry = new THREE.BoxGeometry(2, 5, 2);
+    var leg4Geometry = new THREE.BoxGeometry(2, 5, 2);
+
+    var wallMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load('textures/Keu.jpg')});
     var wallData = [
         {posX: -9.75, posY: 1, posZ: -12.5, geometry: xWallGeometry},
         {posX: 9.75, posY: 1, posZ: -12.5, geometry: xWallGeometry},
@@ -62,6 +84,20 @@ function initTable(){
         {posX: 21.5, posY: 0.5, posZ: 0, geometry: zBorderGeometry}
     ];
 
+    var legMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load('texures/tableleg.jpg')});
+    var legData = [
+        {posX:-19.5 , posY:-5, posZ:-11.5, geometry:leg1Geometry},
+        {posX:19.5, posY:-5, posZ:11.5, geometry:leg2Geometry},
+        {posX:0, posY:-5, posZ:-12, geometry:leg3Geometry},
+        {posX:0, posY:-5, posZ:12, geometry:leg4Geometry}
+    ];
+
+    for(var i = 0; i < legData.length; i++){
+        var leg = new THREE.Mesh(legData[i].geometry, legMaterial);
+        leg.position.set(legData[i].posX, legData[i].posY, legData[i].posZ);
+        table.add(leg);
+    }
+
     for(var i = 0; i < wallData.length; i++){
         var wall = new THREE.Mesh(wallData[i].geometry, wallMaterial);
         wall.position.set(wallData[i].posX, wallData[i].posY, wallData[i].posZ);
@@ -69,7 +105,7 @@ function initTable(){
     }
 
     var holeGeometry = new THREE.CircleGeometry(1, 32);
-    var holeMaterial = new THREE.MeshBasicMaterial({color: 0x1d283b});
+    var holeMaterial = new THREE.MeshLambertMaterial({color: 0x1d283b});
     var holePositions = [
         {x: -19.5, y: 0.51, z: -11.5},
         {x: 0, y: 0.51, z: -12},
@@ -120,20 +156,18 @@ function initBalls(){
 
 function initCue(){
     var textureLoader = new THREE.TextureLoader();
-    var cueMaterial = new THREE.MeshBasicMaterial({map: textureLoader.load('textures/hout.jpg')});
+    var cueMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load('textures/hout.jpg')});
     var cueGeometry = new THREE.CylinderGeometry(0.05, 0.2, 15, 32, 32);
     var cueMesh = new THREE.Mesh(cueGeometry, cueMaterial);
     cueGeometry.translate(0, -9, 0);
-    //cueMesh.rotation.z = Math.PI / 2;
-    cueMesh.rotation.z = -0.6 * Math.PI;
+    cueMesh.rotation.z = Math.PI / 2;
+    cueMesh.rotation.z = -0.55 * Math.PI;
     cueMesh.position.y = 0;
 
     cuePivot = new THREE.Object3D();
     //cuePivot.rotation.z = 0.95 * Math.PI;
     cuePivot.add(cueMesh);
     balls[0].add(cuePivot);
-    cuePivot.add(camera);
-
 }
 
 //Draaien van de cue om de witte bal heen.
@@ -289,6 +323,7 @@ function appendImg(ballNr, player){
 function render() {
     requestAnimationFrame(render);
 
+    controls.target.copy(balls[0].position);
     controls.update();
 
     for (var i = 0; i < balls.length; i++) {
@@ -345,19 +380,21 @@ document.addEventListener("keydown", function (keycode) {
             break;
         //Keys om de Cue te rotaten om de witte bal. Hoofdletters voor grotere stapppen.
         case "a":
-            rotateCue(0.01);
-            break;
-        case "d":
             rotateCue(-0.01);
             break;
-        case "A":
-            rotateCue(0.1);
+        case "d":
+            rotateCue(0.01);
             break;
-        case "D":
+        case "A":
             rotateCue(-0.1);
             break;
+        case "D":
+            rotateCue(0.1);
+            break;
         case "p":
-            //nothingyet
+            console.log("blackx= " + balls[8].position.x);
+            console.log("blacky= " + balls[8].position.y);
+            console.log("blackz= " + balls[8].position.z);
             break;
     }
 });
