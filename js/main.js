@@ -13,7 +13,6 @@ function initScene() {
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.up = new THREE.Vector3(0,1,0);
-    camera.noRotate = true;
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -23,7 +22,7 @@ function initScene() {
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-    controls.enableZoom = true;
+    controls.enableZoom = false;
     controls.enablePan = false;
     controls.enableRotate = false;
 
@@ -49,7 +48,7 @@ function initTable(){
     var zWallGeometry = new THREE.BoxGeometry(1, 1, 21);
     var xBorderGeometry = new THREE.BoxGeometry(44,2,1);
     var zBorderGeometry = new THREE.BoxGeometry(1 ,2, 26);
-    var wallMaterial = new THREE.MeshBasicMaterial({map: textureLoader.load('textures/hout.jpg')});
+    var wallMaterial = new THREE.MeshBasicMaterial({map: textureLoader.load('textures/Keu.jpg')});
     var wallData = [
         {posX: -9.75, posY: 1, posZ: -12.5, geometry: xWallGeometry},
         {posX: 9.75, posY: 1, posZ: -12.5, geometry: xWallGeometry},
@@ -121,7 +120,7 @@ function initBalls(){
 
 function initCue(){
     var textureLoader = new THREE.TextureLoader();
-    var cueMaterial = new THREE.MeshBasicMaterial({map: textureLoader.load('textures/Keu.jpg')});
+    var cueMaterial = new THREE.MeshBasicMaterial({map: textureLoader.load('textures/hout.jpg')});
     var cueGeometry = new THREE.CylinderGeometry(0.05, 0.2, 15, 32, 32);
     var cueMesh = new THREE.Mesh(cueGeometry, cueMaterial);
     cueGeometry.translate(0, -9, 0);
@@ -289,6 +288,7 @@ function appendImg(ballNr, player){
 
 function render() {
     requestAnimationFrame(render);
+
     controls.update();
 
     for (var i = 0; i < balls.length; i++) {
@@ -355,6 +355,9 @@ document.addEventListener("keydown", function (keycode) {
             break;
         case "D":
             rotateCue(-0.1);
+            break;
+        case "p":
+            //nothingyet
             break;
     }
 });
