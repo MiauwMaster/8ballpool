@@ -63,12 +63,9 @@ function initTable(){
 
     var xWallGeometry = new THREE.BoxGeometry(17.5, 1, 1);
     var zWallGeometry = new THREE.BoxGeometry(1, 1, 21);
-    var xBorderGeometry = new THREE.BoxGeometry(44,2,1);
-    var zBorderGeometry = new THREE.BoxGeometry(1 ,2, 26);
-    var leg1Geometry = new THREE.BoxGeometry(2, 5, 2);
-    var leg2Geometry = new THREE.BoxGeometry(2, 5, 2);
-    var leg3Geometry = new THREE.BoxGeometry(2, 5, 2);
-    var leg4Geometry = new THREE.BoxGeometry(2, 5, 2);
+    var xBorderGeometry = new THREE.BoxGeometry(44,5,1);
+    var zBorderGeometry = new THREE.BoxGeometry(1 ,5, 26);
+
 
     var wallMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load('textures/Keu.jpg')});
     var wallData = [
@@ -78,18 +75,23 @@ function initTable(){
         {posX: 9.75, posY: 1, posZ: 12.5, geometry: xWallGeometry},
         {posX: -20.5, posY: 1, posZ: 0, geometry: zWallGeometry},
         {posX: 20.5, posY: 1, posZ: 0, geometry: zWallGeometry},
-        {posX: 0, posY: 0.5, posZ: -13.5, geometry: xBorderGeometry},
-        {posX: 0, posY: 0.5, posZ: 13.5, geometry: xBorderGeometry},
-        {posX: -21.5, posY: 0.5, posZ: 0, geometry: zBorderGeometry},
-        {posX: 21.5, posY: 0.5, posZ: 0, geometry: zBorderGeometry}
+        {posX: 0, posY: -1, posZ: -13.5, geometry: xBorderGeometry},
+        {posX: 0, posY: -1, posZ: 13.5, geometry: xBorderGeometry},
+        {posX: -21.5, posY: -1, posZ: 0, geometry: zBorderGeometry},
+        {posX: 21.5, posY: -1, posZ: 0, geometry: zBorderGeometry}
     ];
 
-    var legMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load('texures/tableleg.jpg')});
+    var leg1Geometry = new THREE.BoxGeometry(3, 10, 3);
+    var leg2Geometry = new THREE.BoxGeometry(3, 10, 3);
+    var leg3Geometry = new THREE.BoxGeometry(3, 10, 3);
+    var leg4Geometry = new THREE.BoxGeometry(3, 10, 3);
+
+    var legMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load('textures/tableleg.jpg')});
     var legData = [
         {posX:-19.5 , posY:-5, posZ:-11.5, geometry:leg1Geometry},
         {posX:19.5, posY:-5, posZ:11.5, geometry:leg2Geometry},
-        {posX:0, posY:-5, posZ:-12, geometry:leg3Geometry},
-        {posX:0, posY:-5, posZ:12, geometry:leg4Geometry}
+        {posX:-19.5, posY:-5, posZ:11.5, geometry:leg3Geometry},
+        {posX:19.5, posY:-5, posZ:-11.5, geometry:leg4Geometry}
     ];
 
     for(var i = 0; i < legData.length; i++){
