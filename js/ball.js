@@ -7,7 +7,7 @@ class Ball extends THREE.Mesh{
     constructor(id, x, z, type){
         var textureLoader = new THREE.TextureLoader();
         var ballGeometry = new THREE.SphereGeometry(0.5, 20, 50);
-        var ballMaterial = new THREE.MeshBasicMaterial({map: textureLoader.load('textures/Ball'+id+'.jpg')});
+        var ballMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load('textures/Ball'+id+'.jpg')});
         super(ballGeometry, ballMaterial);
         this.position.set(x, 0.5, z);
         this.rotation.set(0, Math.PI, Math.PI / 2);
